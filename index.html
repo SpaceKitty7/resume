@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scott Hufford — Licensed Practical Nurse | Chicago</title>
+<meta name="description" content="Scott Hufford — Licensed Practical Nurse with 10+ years in home health, case management, behavioral health, and memory care. Chicago-based. Available now.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#06080d;--bg2:#0d1117;--bg-card:#131921;--bg-card-h:#1a2233;
+  --text:#e6edf3;--dim:#8b949e;--mute:#545d68;
+  --accent:#00e59a;--ag:rgba(0,229,154,.15);--ags:rgba(0,229,154,.3);
+  --a2:#58a6ff;--border:#1c2533;--bl:#151d28;
+  --fd:'Playfair Display',Georgia,serif;
+  --fb:'Outfit',system-ui,sans-serif;
+  --fm:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── SPACE BACKGROUND ── */
+#space-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.nebula{position:fixed;border-radius:50%;filter:blur(80px);opacity:.12;pointer-events:none;z-index:0}
+.nebula-1{width:600px;height:600px;top:-10%;right:-5%;background:radial-gradient(circle,#6b3fa0,#2a1650,transparent 70%);animation:nebdrift 30s ease-in-out infinite}
+.nebula-2{width:450px;height:450px;bottom:10%;left:-8%;background:radial-gradient(circle,#1a4a6b,#0d2a3f,transparent 70%);animation:nebdrift 25s ease-in-out infinite reverse}
+.nebula-3{width:350px;height:350px;top:40%;right:20%;background:radial-gradient(circle,#2d6b4f,#0f3025,transparent 70%);animation:nebdrift 35s ease-in-out infinite 5s}
+@keyframes nebdrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-30px) scale(1.08)}66%{transform:translate(-15px,20px) scale(.95)}}
+
+/* Content sits above space bg */
+.nav,.hero,section,footer{position:relative;z-index:1}
+::selection{background:var(--accent);color:var(--bg)}
+a{color:var(--accent);text-decoration:none;transition:color .25s}a:hover{color:#fff}
+img{max-width:100%;display:block}
+
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+
+.r{opacity:0;transform:translateY(36px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.r.v{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}.rd5{transition-delay:.5s}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,3rem);background:rgba(6,8,13,.75);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--bl);transition:box-shadow .3s}
+.nav.scrolled{box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.nav-logo{font-family:var(--fd);font-size:1.1rem;color:var(--text)}.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:.15rem;align-items:center}
+.nav-links a{color:var(--dim);font-size:.78rem;font-weight:500;padding:.4rem .75rem;border-radius:6px;letter-spacing:.05em;text-transform:uppercase;transition:all .2s}
+.nav-links a:hover{color:var(--accent);background:var(--ag)}
+.nav-cta{background:var(--accent)!important;color:var(--bg)!important;font-weight:600!important;margin-left:.4rem!important;padding:.42rem 1rem!important}
+.nav-cta:hover{background:#fff!important;box-shadow:0 4px 24px var(--ags);transform:translateY(-1px)}
+.burger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:7rem 2rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-25%;right:-15%;width:700px;height:700px;background:radial-gradient(circle,var(--ag) 0%,transparent 70%);border-radius:50%;animation:drift 9s ease-in-out infinite;pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-15%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(88,166,255,.06) 0%,transparent 70%);border-radius:50%;animation:drift 12s ease-in-out infinite reverse;pointer-events:none}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-25px) scale(1.04)}}
+.hero-inner{max-width:880px;margin:0 auto;position:relative;z-index:2}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem 1rem;background:var(--ag);border:1px solid rgba(0,229,154,.12);border-radius:100px;font-size:.78rem;font-weight:500;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeDown .8s var(--ease) both}
+.badge::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{font-family:var(--fd);font-size:clamp(2.8rem,7vw,5.2rem);line-height:1.06;margin-bottom:.4rem;animation:riseUp 1s var(--ease) .15s both}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--dim);font-weight:300;max-width:620px;margin-bottom:2.2rem;animation:riseUp 1s var(--ease) .3s both}
+@keyframes riseUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;animation:riseUp 1s var(--ease) .45s both}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border-radius:8px;font-weight:600;font-size:.9rem;letter-spacing:.02em;transition:all .3s var(--ease);cursor:pointer;border:none;font-family:var(--fb)}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{background:#fff;color:var(--bg);box-shadow:0 6px 30px var(--ags);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:2.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);animation:riseUp 1s var(--ease) .6s both}
+.hero-stat-num{font-family:var(--fd);font-size:2.2rem;color:var(--accent);line-height:1}
+.hero-stat-label{font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem}
+
+/* ── SECTIONS ── */
+section{padding:5rem clamp(1.5rem,5vw,3rem)}
+.si{max-width:960px;margin:0 auto}
+.sl{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;font-family:var(--fm)}
+.st{font-family:var(--fd);font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:.6rem;line-height:1.15}
+.sd{color:var(--dim);max-width:600px;margin-bottom:2.5rem;font-size:1rem}
+
+/* ── ABOUT ── */
+#about{background:rgba(13,17,23,.88);border-top:1px solid var(--bl);border-bottom:1px solid var(--bl);backdrop-filter:blur(2px)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.about-text{font-size:1.05rem;color:var(--dim);line-height:1.85}
+.about-text strong{color:var(--text);font-weight:500}
+.about-img{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.4);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.about-img:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.about-img img{width:100%;aspect-ratio:1;object-fit:cover}
+.about-cap{position:absolute;bottom:0;left:0;right:0;padding:.6rem 1rem;background:rgba(6,8,13,.8);backdrop-filter:blur(10px);font-size:.75rem;color:var(--mute);text-align:center;font-family:var(--fm);letter-spacing:.04em}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:2.5rem}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--border));border-radius:2px}
+.tl-item{position:relative;margin-bottom:2.5rem}.tl-item:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:-2.5rem;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2.5px solid var(--accent);box-shadow:0 0 0 4px var(--ag);transition:all .3s}
+.tl-item:hover .tl-dot{background:var(--accent);box-shadow:0 0 0 8px var(--ag)}
+.tl-header{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;margin-bottom:.4rem}
+.tl-role{font-weight:600;font-size:1.1rem}
+.tl-co{color:var(--accent);font-weight:500}
+.tl-meta{font-size:.8rem;color:var(--mute);font-family:var(--fm)}
+.tl-ul{list-style:none;padding:0}
+.tl-ul li{position:relative;padding-left:1.2rem;margin-bottom:.35rem;color:var(--dim);font-size:.92rem}
+.tl-ul li::before{content:'›';position:absolute;left:0;color:var(--accent);font-weight:700}
+
+/* ── SKILLS ── */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.sc{padding:1.4rem 1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;transition:all .35s var(--ease);position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--a2));transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.sc:hover{border-color:rgba(0,229,154,.2);background:var(--bg-card-h);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.sc:hover::before{transform:scaleX(1)}
+.sc-icon{font-size:1.6rem;margin-bottom:.6rem;display:block}
+.sc-name{font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+.sc-detail{font-size:.82rem;color:var(--mute);line-height:1.5}
+
+/* ── EDUCATION ── */
+.edu-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.ec{padding:1.6rem 1.8rem;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;transition:all .35s var(--ease)}
+.ec:hover{border-color:rgba(0,229,154,.2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.ec-deg{font-weight:600;font-size:1.05rem;margin-bottom:.15rem}
+.ec-sch{color:var(--accent);font-size:.9rem;font-weight:500;margin-bottom:.25rem}
+.ec-det{font-size:.82rem;color:var(--mute)}
+
+/* ── CTA ── */
+#contact{background:rgba(13,17,23,.88);border-top:1px solid var(--bl);backdrop-filter:blur(2px)}
+.cta-box{text-align:center;padding:3.5rem 2rem;background:linear-gradient(135deg,rgba(0,229,154,.04),rgba(88,166,255,.04));border:1px solid var(--border);border-radius:20px;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,var(--ag) 0%,transparent 50%);pointer-events:none}
+.cta-title{font-family:var(--fd);font-size:clamp(1.6rem,3.5vw,2.4rem);margin-bottom:.5rem;position:relative}
+.cta-sub{color:var(--dim);margin-bottom:2rem;font-size:1rem;position:relative}
+.cta-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem;position:relative}
+.cp{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.3rem;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;color:var(--text);font-size:.88rem;font-weight:500;transition:all .3s var(--ease);cursor:pointer;font-family:var(--fb)}
+.cp:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,.3)}
+.cp svg{width:16px;height:16px;flex-shrink:0}
+
+footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-top:1px solid var(--bl)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(6,8,13,.96);backdrop-filter:blur(20px);flex-direction:column;padding:1rem;gap:.25rem;border-bottom:1px solid var(--border)}
+  .nav-links.open{display:flex}
+  .burger{display:block}
+  .hero h1{font-size:clamp(2.2rem,8vw,3.5rem)}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem}
+  .about-grid{grid-template-columns:1fr;gap:2rem}
+  .about-img{max-width:360px;margin:0 auto}
+  .edu-cards{grid-template-columns:1fr}
+  .sg{grid-template-columns:1fr}
+  .timeline{padding-left:2rem}.tl-dot{left:-2rem}
+}
+@media(max-width:480px){
+  .hero{padding:6rem 1.2rem 3rem}section{padding:3.5rem 1.2rem}
+  .hero-actions{flex-direction:column}.btn{width:100%;justify-content:center}
+}
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,8,13,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2.5rem 3rem;text-align:center;position:relative;transform:scale(.92) translateY(10px);transition:transform .4s var(--ease);min-width:300px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.modal-overlay.open .modal-box{transform:scale(1) translateY(0)}
+.modal-close{position:absolute;top:.75rem;right:1rem;background:none;border:none;color:var(--mute);font-size:1.6rem;cursor:pointer;transition:color .2s;line-height:1}.modal-close:hover{color:var(--text)}
+.modal-row{margin-bottom:1.5rem}.modal-row:last-child{margin-bottom:0}
+.modal-icon{font-size:2.2rem;margin-bottom:.75rem}
+.modal-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin-bottom:.4rem;font-family:var(--fm)}
+.modal-value{font-size:1.3rem;font-weight:600;color:var(--accent);display:block;word-break:break-all;transition:color .2s}
+.modal-value:hover{color:#fff}
+.modal-divider{height:1px;background:var(--border);margin:1.5rem 0}
+
+@media print{
+  body{background:#fff;color:#111}.nav,body::after,.hero::before,.hero::after{display:none}
+  .hero{min-height:auto;padding:2rem 0}section{padding:1.5rem 0}
+  .sc,.ec,.tl-item{break-inside:avoid}a{color:#111}
+}
+</style>
+</head>
+<body>
+
+<!-- SPACE BACKGROUND -->
+<canvas id="space-bg"></canvas>
+<div class="nebula nebula-1"></div>
+<div class="nebula nebula-2"></div>
+<div class="nebula nebula-3"></div>
+
+<header class="nav" id="navbar">
+  <div class="nav-logo">Scott <span>Hufford</span></div>
+  <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="javascript:showModal('both')" class="nav-cta">Hire Scott</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge">Available for Hire — Chicago, IL</div>
+    <h1>Scott Hufford,<br><em>LPN</em></h1>
+    <p class="hero-sub">Healthcare professional with 10+ years delivering compassionate, coordinated care across home health, behavioral health, and memory care settings.</p>
+    <div class="hero-actions">
+      <button onclick="showModal('both')" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact Me
+      </button>
+      <a href="#experience" onclick="event.preventDefault();document.getElementById('experience').scrollIntoView({behavior:'smooth'})" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        View Experience
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">10+</div><div class="hero-stat-label">Years Experience</div></div>
+      <div><div class="hero-stat-num">3+</div><div class="hero-stat-label">Specialties</div></div>
+      <div><div class="hero-stat-num">2</div><div class="hero-stat-label">Degrees</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="si">
+    <div class="about-grid">
+      <div class="r">
+        <div class="sl">// About</div>
+        <h2 class="st">Built on Trust,<br>Driven by Care</h2>
+        <p class="about-text">
+          Dedicated healthcare professional with extensive <strong>home health and case management</strong> experience seeking a new team. Committed to the delivery of compassionate, coordinated care across diverse patient populations.
+          <br><br>
+          My experience and field work have skilled and seasoned me in building <strong>strong relationships with clients, families, and field staff</strong> — ensuring seamless communication, a reinforced feedback loop, continuity of care, and a high standard of service, at every touchpoint.
+        </p>
+      </div>
+      <div class="r rd2">
+        <div class="about-img">
+          <img src="images/image3.png" alt="Tower of Trust — SH, 2025" loading="lazy">
+          <div class="about-cap">SH — Tower of Trust (2025)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="si">
+    <div class="r">
+      <div class="sl">// Experience</div>
+      <h2 class="st">Professional Journey</h2>
+      <p class="sd">A decade of hands-on patient care across multiple settings and populations.</p>
+    </div>
+    <div class="timeline r rd1">
+      <div class="tl-item r">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-role">LPN &amp; Case Manager</span>
+          <span class="tl-co">All Star, Vintage, Maxim — Home Health</span>
+        </div>
+        <div class="tl-meta">MN &amp; IL · 2015 – Present</div>
+        <ul class="tl-ul">
+          <li>Collaborating with the client's multidisciplinary team for the creation of optimal CSM-485s</li>
+          <li>Opening new cases on day one, training employees, tracking needs, ensuring compliance to CSM-485</li>
+          <li>Collecting and verifying demographic, medical, and environmental details crucial to a healing environment</li>
+          <li>Making clients feel heard and respected, even if I or the agency cannot help</li>
+          <li>Guiding clients and families through agency offerings as their needs and benefits change through life</li>
+        </ul>
+      </div>
+      <div class="tl-item r">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-role">LPN — Memory Care</span>
+          <span class="tl-co">Belmont Village</span>
+        </div>
+        <div class="tl-meta">Chicago, IL · 2022</div>
+        <ul class="tl-ul">
+          <li>Successful and timely error-free med passes, including psychotropics and injectables</li>
+          <li>Educated resident families on disease process, care techniques, and use of psychotropic meds per facility protocol</li>
+          <li>Implemented safety SOPs to halt wandering, and ensure a secure environment and emergency preparedness</li>
+          <li>Diligent charting and communicating with doctors to ensure ongoing quality and continuity of care</li>
+        </ul>
+      </div>
+      <div class="tl-item r">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-role">Behavioral Health Nurse</span>
+          <span class="tl-co">Clayton Residential</span>
+        </div>
+        <div class="tl-meta">Chicago, IL · 2021</div>
+        <ul class="tl-ul">
+          <li>Provided comprehensive nursing care to residents with serious mental illnesses in a 232-bed, 24-hour facility</li>
+          <li>Administered medications and monitored patient responses, ensuring adherence and therapeutic value</li>
+          <li>Collaborated with a multidisciplinary team to develop and implement individualized recovery plans</li>
+          <li>Responded to medical emergencies and provided immediate care</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" style="background:rgba(13,17,23,.88);border-top:1px solid var(--bl);border-bottom:1px solid var(--bl);backdrop-filter:blur(2px)">
+  <div class="si">
+    <div class="r">
+      <div class="sl">// Competencies</div>
+      <h2 class="st">Skills &amp; Expertise</h2>
+      <p class="sd">Clinical depth meets creative problem-solving.</p>
+    </div>
+    <div class="sg">
+      <div class="sc r"><span class="sc-icon">🖥️</span><div class="sc-name">EMR Systems</div><div class="sc-detail">Fluent in Epic, Oracle, MEDITECH, Allscripts, and other major EMR platforms.</div></div>
+      <div class="sc r rd1"><span class="sc-icon">🩺</span><div class="sc-name">Clinical Procedures</div><div class="sc-detail">Trach, GT, GJT, NJT, PICC, TPN, ventilators, concentrators, and IV therapy.</div></div>
+      <div class="sc r rd2"><span class="sc-icon">📋</span><div class="sc-name">Coding &amp; Documentation</div><div class="sc-detail">OASIS assessments, ICD-10, CPT codes. Letters of medical necessity. DME/pharmacy optimization.</div></div>
+      <div class="sc r rd3"><span class="sc-icon">🎓</span><div class="sc-name">Education &amp; Training</div><div class="sc-detail">Diabetic Educator. LTV and Trilogy ventilator trainer for new hires and parents.</div></div>
+      <div class="sc r rd4"><span class="sc-icon">🛡️</span><div class="sc-name">Infection Control</div><div class="sc-detail">Infection control protocols and client antiseptic education. Clear communication of medical orders and discharge info.</div></div>
+      <div class="sc r rd5"><span class="sc-icon">🤝</span><div class="sc-name">Client Relations</div><div class="sc-detail">Client outreach, recruiting, scheduling, and agency service advocacy. Building trust at every touchpoint.</div></div>
+      <div class="sc r"><span class="sc-icon">🧠</span><div class="sc-name">Critical Thinking</div><div class="sc-detail">Creative solutions while following SOP and HIPAA laws. Palpable calmness on rough days — keeps others calm too.</div></div>
+      <div class="sc r rd1"><span class="sc-icon">💻</span><div class="sc-name">Technology</div><div class="sc-detail">Self-taught software engineer. AI programming and API orchestration. Bridging healthcare and tech.</div></div>
+      <div class="sc r rd2"><span class="sc-icon">🌎</span><div class="sc-name">Bilingual</div><div class="sc-detail">Conversational Spanish — working on fluency every day.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="si">
+    <div class="r">
+      <div class="sl">// Education</div>
+      <h2 class="st">Academic Background</h2>
+    </div>
+    <div class="edu-cards">
+      <div class="ec r"><div class="ec-deg">Associate of Science — Practical Nursing</div><div class="ec-sch">Rasmussen School of Nursing</div><div class="ec-det">Brooklyn Park, MN</div></div>
+      <div class="ec r rd1"><div class="ec-deg">Bachelor of Arts — Psychology</div><div class="ec-sch">University of Minnesota</div><div class="ec-det">St. Paul, MN · Minor in Food Science &amp; Human Nutrition</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="si">
+    <div class="cta-box r">
+      <h2 class="cta-title">Let's Work Together</h2>
+      <p class="cta-sub">Currently seeking new opportunities in the Chicagoland area. I'd love to connect.</p>
+      <div class="cta-actions">
+        <button onclick="showModal('email')" class="cp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email Me
+        </button>
+        <button onclick="showModal('phone')" class="cp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Call Me
+        </button>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<footer><p>&copy; 2025 Scott Hufford. Designed with care.</p></footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+const nav=document.getElementById('navbar');
+let t=false;
+window.addEventListener('scroll',()=>{if(!t){requestAnimationFrame(()=>{nav.classList.toggle('scrolled',window.scrollY>40);t=false});t=true}});
+document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open'))});
+function animCounters(){document.querySelectorAll('.hero-stat-num').forEach(el=>{const txt=el.textContent,num=parseInt(txt),suf=txt.replace(/[0-9]/g,'');let c=0;const s=Math.max(1,Math.floor(num/20)),i=setInterval(()=>{c+=s;if(c>=num){c=num;clearInterval(i)}el.textContent=c+suf},50)})}
+const hObs=new IntersectionObserver(e=>{if(e[0].isIntersecting){animCounters();hObs.disconnect()}},{threshold:.3});
+hObs.observe(document.querySelector('.hero'));
+
+// Modal
+const modal=document.getElementById('modal'),mc=document.getElementById('modal-content');
+function modalRow(icon,label,text,href){return `<div class="modal-row"><div class="modal-icon">${icon}</div><div class="modal-label">${label}</div><a class="modal-value" href="${href}">${text}</a></div>`}
+function showModal(type){
+  if(type==='email') mc.innerHTML=modalRow('✉️','Email Address','Huffo6@proton.me','mailto:Huffo6@proton.me');
+  else if(type==='phone') mc.innerHTML=modalRow('📞','Phone Number','612-239-1431','tel:+16122391431');
+  else mc.innerHTML=modalRow('✉️','Email Address','Huffo6@proton.me','mailto:Huffo6@proton.me')+'<div class="modal-divider"></div>'+modalRow('📞','Phone Number','612-239-1431','tel:+16122391431');
+  modal.classList.add('open');
+}
+function closeModal(){modal.classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// ── SPACE STAR FIELD ──
+(function(){
+  const canvas=document.getElementById('space-bg'),ctx=canvas.getContext('2d');
+  let w,h,scrollY=0,stars=[],shootingStars=[];
+
+  function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight}
+  window.addEventListener('resize',resize);resize();
+
+  // Create layered stars with different depths
+  function createStars(){
+    stars=[];
+    const count=Math.floor((w*h)/1800);
+    for(let i=0;i<count;i++){
+      const depth=Math.random(); // 0=far, 1=near
+      stars.push({
+        x:Math.random()*w,
+        y:Math.random()*h*4, // span entire scrollable page
+        r:depth<.6?0.4+Math.random()*0.6 : depth<.9?0.8+Math.random()*1 : 1.2+Math.random()*1.5,
+        depth:depth,
+        twinkleSpeed:1+Math.random()*3,
+        twinkleOffset:Math.random()*Math.PI*2,
+        hue:Math.random()<.7?0:Math.random()<.5?220:45, // white, blue, or gold
+        sat:Math.random()<.7?0:30+Math.random()*40
+      });
+    }
+  }
+  createStars();
+  window.addEventListener('resize',createStars);
+
+  // Shooting stars
+  function spawnShootingStar(){
+    shootingStars.push({
+      x:Math.random()*w,
+      y:scrollY+Math.random()*h*0.5,
+      len:80+Math.random()*120,
+      speed:8+Math.random()*8,
+      angle:0.6+Math.random()*0.4,
+      life:1,
+      decay:0.012+Math.random()*0.01
+    });
+  }
+  setInterval(()=>{if(Math.random()<0.4)spawnShootingStar()},3000);
+
+  // Track scroll
+  window.addEventListener('scroll',()=>{scrollY=window.pageYOffset},{passive:true});
+
+  function draw(time){
+    ctx.clearRect(0,0,w,h);
+    const t=time*0.001;
+
+    // Draw stars with parallax
+    for(const s of stars){
+      const parallax=0.05+s.depth*0.45;
+      const sy=((s.y-scrollY*parallax)%((h*4))+h*4)%(h*4);
+      if(sy<-10||sy>h+10) continue;
+
+      const twinkle=0.5+0.5*Math.sin(t*s.twinkleSpeed+s.twinkleOffset);
+      const alpha=(0.3+0.7*s.depth)*twinkle;
+      const light=80+20*twinkle;
+
+      ctx.beginPath();
+      ctx.arc(s.x,sy,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.sat>0?`hsla(${s.hue},${s.sat}%,${light}%,${alpha})`:`rgba(${light*2.55},${light*2.55},${light*2.55},${alpha})`;
+      ctx.fill();
+
+      // Glow on larger stars
+      if(s.r>1.2){
+        ctx.beginPath();
+        ctx.arc(s.x,sy,s.r*3,0,Math.PI*2);
+        ctx.fillStyle=s.sat>0?`hsla(${s.hue},${s.sat}%,${light}%,${alpha*0.08})`:`rgba(255,255,255,${alpha*0.06})`;
+        ctx.fill();
+      }
+    }
+
+    // Draw shooting stars
+    for(let i=shootingStars.length-1;i>=0;i--){
+      const ss=shootingStars[i];
+      ss.x+=Math.cos(ss.angle)*ss.speed;
+      const sy=ss.y-scrollY*0.3;
+      ss.y+=Math.sin(ss.angle)*ss.speed;
+      ss.life-=ss.decay;
+      if(ss.life<=0){shootingStars.splice(i,1);continue}
+
+      const tailX=ss.x-Math.cos(ss.angle)*ss.len;
+      const tailY=sy-Math.sin(ss.angle)*ss.len+Math.sin(ss.angle)*ss.speed;
+      const grad=ctx.createLinearGradient(tailX,tailY,ss.x,sy);
+      grad.addColorStop(0,'rgba(255,255,255,0)');
+      grad.addColorStop(1,`rgba(255,255,255,${ss.life*0.7})`);
+      ctx.beginPath();
+      ctx.moveTo(tailX,tailY);
+      ctx.lineTo(ss.x,sy);
+      ctx.strokeStyle=grad;
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
