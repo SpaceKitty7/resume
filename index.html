@@ -206,7 +206,7 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
   <div class="hero-inner">
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-bottom:1.5rem">
       <div class="badge" style="margin-bottom:0">Available for Hire — Chicago, IL</div>
-      <button onclick="showModal('website')" class="btn btn-primary" style="padding:.35rem 1rem;font-size:.78rem">Build Me a Custom Website</button>
+      <button onclick="showModal('website')" class="btn btn-primary" style="padding:.35rem 1rem;font-size:.78rem">Build Me a Custom Resume — Anyone, Any Job</button>
     </div>
     <h1>Scott Hufford,<br><em>LPN</em></h1>
     <p class="hero-sub">Healthcare professional with 10+ years delivering compassionate, coordinated care across home health, behavioral health, and memory care settings.</p>
@@ -399,7 +399,7 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
 
 <footer>
   <p>&copy; 2025 Scott Hufford. Designed with care.</p>
-  <button onclick="showModal('website')" class="btn btn-primary" style="margin-top:1rem">Build Me a Custom Website</button>
+  <button onclick="showModal('website')" class="btn btn-primary" style="margin-top:1rem">Build Me a Custom Resume — Anyone, Any Job</button>
 </footer>
 
 <script>
@@ -421,7 +421,7 @@ function modalRow(icon,label,text,href){return `<div class="modal-row"><div clas
 function showModal(type){
   if(type==='email') mc.innerHTML=modalRow('✉️','Email Address','Huffo6@proton.me','mailto:Huffo6@proton.me');
   else if(type==='phone') mc.innerHTML=modalRow('📞','Phone Number','612-239-1431','tel:+16122391431');
-  else if(type==='website') mc.innerHTML='<div class="modal-row"><div class="modal-icon">🚀</div><div class="modal-label">Custom Website Services</div><div style="color:var(--dim);font-size:.95rem;margin:1rem 0;line-height:1.6">Interested in a custom website like this one?<br>Text me and let\'s talk!</div></div><div class="modal-divider"></div>'+modalRow('👤','Name','Scott Hufford','#')+'<div class="modal-divider"></div>'+modalRow('📱','Text Me','612-239-1431','sms:+16122391431');
+  else if(type==='website') mc.innerHTML='<div class="modal-row"><div class="modal-icon">📄</div><div class="modal-label">Custom Resume Services</div><div style="color:var(--dim);font-size:.95rem;margin:1rem 0;line-height:1.6">Interested in a custom resume like this one?<br>Anyone, any job — text me and let\'s talk!</div></div><div class="modal-divider"></div>'+modalRow('👤','Name','Scott Hufford','#')+'<div class="modal-divider"></div>'+modalRow('📱','Text Me','612-239-1431','sms:+16122391431');
   else mc.innerHTML=modalRow('✉️','Email Address','Huffo6@proton.me','mailto:Huffo6@proton.me')+'<div class="modal-divider"></div>'+modalRow('📞','Phone Number','612-239-1431','tel:+16122391431');
   modal.classList.add('open');
 }
