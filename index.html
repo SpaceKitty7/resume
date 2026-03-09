@@ -369,9 +369,10 @@ let t=false;
 window.addEventListener('scroll',()=>{if(!t){requestAnimationFrame(()=>{nav.classList.toggle('scrolled',window.scrollY>40);t=false});t=true}});
 document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open'))});
 const statData=[];document.querySelectorAll('.hero-stat-num').forEach(el=>{statData.push({el,txt:el.textContent,num:parseFloat(el.textContent),suf:el.textContent.replace(/[0-9.]/g,''),isDecimal:el.textContent.includes('.')&&!el.textContent.replace(/[0-9.]/g,'').includes('.')})});
-function animCounters(){statData.forEach(s=>{s.el.textContent='0'+s.suf;let c=0;const step=s.isDecimal?0.1:Math.max(1,Math.floor(s.num/20));const i=setInterval(()=>{c+=step;if(c>=s.num){c=s.num;clearInterval(i)}s.el.textContent=(s.isDecimal?c.toFixed(1):Math.round(c))+s.suf},50)})}
+function animCounters(){statData.forEach(s=>{s.el.textContent='0'+s.suf;let c=0;const step=s.isDecimal?0.05:Math.max(1,Math.floor(s.num/35));const i=setInterval(()=>{c+=step;if(c>=s.num){c=s.num;clearInterval(i)}s.el.textContent=(s.isDecimal?c.toFixed(1):Math.round(c))+s.suf},90)})}
 let heroVisible=false;const hObs=new IntersectionObserver(e=>{if(e[0].isIntersecting&&!heroVisible){heroVisible=true;animCounters()}else if(!e[0].isIntersecting){heroVisible=false}},{threshold:.3});
 hObs.observe(document.querySelector('.hero'));
+setTimeout(()=>{if(document.querySelector('.hero').getBoundingClientRect().top<window.innerHeight){heroVisible=true;animCounters()}},100);
 
 // Modal
 const modal=document.getElementById('modal'),mc=document.getElementById('modal-content');
