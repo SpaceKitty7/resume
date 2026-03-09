@@ -175,6 +175,11 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
   .hero{min-height:auto;padding:2rem 0}section{padding:1.5rem 0}
   .sc,.ec,.tl-item{break-inside:avoid}a{color:#111}
 }
+
+/* ── CRACK OVERLAY ── */
+.crack-overlay{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;transition:opacity .15s ease-out}
+.crack-overlay.active{opacity:1;pointer-events:auto}
+.crack-overlay svg{width:100%;height:100%}
 </style>
 </head>
 <body>
@@ -359,6 +364,36 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
   </div>
 </div>
 
+<!-- CRACK OVERLAY -->
+<div class="crack-overlay" id="crack-overlay">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="crack-glow"><feGaussianBlur stdDeviation="1" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <g id="crack-lines" filter="url(#crack-glow)" stroke="rgba(200,220,255,0.9)" stroke-width="2" fill="none">
+      <path d="M960,540 L920,480 L870,420 L820,350 L750,280 L680,200 L600,120 L520,40 L440,0"/>
+      <path d="M960,540 L1020,470 L1080,400 L1150,320 L1220,240 L1300,150 L1380,60 L1460,0"/>
+      <path d="M960,540 L900,520 L820,500 L720,480 L600,460 L480,450 L340,440 L200,430 L0,420"/>
+      <path d="M960,540 L1040,530 L1140,520 L1260,510 L1400,500 L1560,490 L1720,480 L1920,470"/>
+      <path d="M960,540 L940,600 L910,680 L870,780 L820,900 L760,1020 L700,1080"/>
+      <path d="M960,540 L990,620 L1030,720 L1080,840 L1140,980 L1200,1080"/>
+      <path d="M960,540 L880,560 L780,590 L660,630 L520,680 L360,740 L180,820 L0,900"/>
+      <path d="M960,540 L1060,570 L1180,610 L1320,660 L1480,720 L1660,790 L1860,870 L1920,900"/>
+      <path d="M920,480 L880,460 L820,430 L740,390"/>
+      <path d="M1020,470 L1060,440 L1120,400 L1200,350"/>
+      <path d="M870,420 L830,450 L770,500 L700,560"/>
+      <path d="M1080,400 L1130,440 L1200,500 L1280,570"/>
+      <path d="M900,520 L860,550 L800,600 L720,660"/>
+      <path d="M1040,530 L1100,560 L1180,610 L1280,670"/>
+      <path d="M940,600 L880,640 L800,700 L700,780"/>
+      <path d="M990,620 L1060,660 L1150,720 L1260,800"/>
+    </g>
+    <circle cx="960" cy="540" r="25" fill="rgba(255,255,255,0.15)"/>
+    <circle cx="960" cy="540" r="15" fill="rgba(255,255,255,0.3)"/>
+    <circle cx="960" cy="540" r="6" fill="rgba(255,255,255,0.6)"/>
+  </svg>
+</div>
+
 <footer><p>&copy; 2025 Scott Hufford. Designed with care.</p></footer>
 
 <script>
@@ -438,6 +473,81 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
   setInterval(()=>{if(Math.random()<0.7)spawnShootingStar()},800); // Very frequent
 
   window.addEventListener('scroll',()=>{scrollY=window.pageYOffset},{passive:true});
+
+  // ── IMPACT METEOR ──
+  let impactMeteor=null;
+  const crackOverlay=document.getElementById('crack-overlay');
+
+  function spawnImpactMeteor(){
+    if(impactMeteor||crackOverlay.classList.contains('active'))return;
+    const edge=Math.floor(Math.random()*4);
+    let startX,startY;
+    if(edge===0){startX=Math.random()*w;startY=-50}
+    else if(edge===1){startX=w+50;startY=Math.random()*h}
+    else if(edge===2){startX=Math.random()*w;startY=h+50}
+    else{startX=-50;startY=Math.random()*h}
+    const centerX=w/2,centerY=h/2;
+    const angle=Math.atan2(centerY-startY,centerX-startX);
+    impactMeteor={x:startX,y:startY,targetX:centerX,targetY:centerY,angle:angle,size:3,speed:8,progress:0};
+  }
+
+  function drawImpactMeteor(){
+    if(!impactMeteor)return;
+    const m=impactMeteor;
+    m.progress+=0.012;
+    m.x+=(m.targetX-m.x)*0.025;
+    m.y+=(m.targetY-m.y)*0.025;
+    m.size=3+m.progress*80;
+    const dist=Math.hypot(m.targetX-m.x,m.targetY-m.y);
+
+    const glow=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.size*3);
+    glow.addColorStop(0,'rgba(255,200,100,0.9)');
+    glow.addColorStop(0.3,'rgba(255,120,50,0.6)');
+    glow.addColorStop(0.6,'rgba(255,60,20,0.3)');
+    glow.addColorStop(1,'rgba(255,30,10,0)');
+    ctx.beginPath();
+    ctx.arc(m.x,m.y,m.size*3,0,Math.PI*2);
+    ctx.fillStyle=glow;
+    ctx.fill();
+
+    const core=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.size);
+    core.addColorStop(0,'rgba(255,255,240,1)');
+    core.addColorStop(0.5,'rgba(255,200,100,0.9)');
+    core.addColorStop(1,'rgba(255,100,50,0.7)');
+    ctx.beginPath();
+    ctx.arc(m.x,m.y,m.size,0,Math.PI*2);
+    ctx.fillStyle=core;
+    ctx.fill();
+
+    const tailLen=100+m.progress*200;
+    const tailX=m.x-Math.cos(m.angle)*tailLen;
+    const tailY=m.y-Math.sin(m.angle)*tailLen;
+    const trail=ctx.createLinearGradient(tailX,tailY,m.x,m.y);
+    trail.addColorStop(0,'rgba(255,100,50,0)');
+    trail.addColorStop(0.5,'rgba(255,150,80,0.4)');
+    trail.addColorStop(1,'rgba(255,200,150,0.8)');
+    ctx.beginPath();
+    ctx.moveTo(tailX,tailY);
+    ctx.lineTo(m.x,m.y);
+    ctx.strokeStyle=trail;
+    ctx.lineWidth=m.size*1.5;
+    ctx.lineCap='round';
+    ctx.stroke();
+
+    if(dist<50||m.progress>1){
+      crackOverlay.classList.add('active');
+      impactMeteor=null;
+    }
+  }
+
+  setTimeout(()=>spawnImpactMeteor(),45000);
+  setInterval(()=>spawnImpactMeteor(),45000);
+
+  function dismissCrack(){crackOverlay.classList.remove('active')}
+  document.addEventListener('mousemove',dismissCrack);
+  document.addEventListener('keydown',dismissCrack);
+  document.addEventListener('click',dismissCrack);
+  document.addEventListener('touchstart',dismissCrack);
 
   function draw(time){
     ctx.clearRect(0,0,w,h);
@@ -609,6 +719,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
       }
     }
 
+    drawImpactMeteor();
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
