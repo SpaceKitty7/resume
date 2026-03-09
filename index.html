@@ -11,7 +11,7 @@
 <style>
 :root {
   --bg:#06080d;--bg2:#0d1117;--bg-card:#131921;--bg-card-h:#1a2233;
-  --text:#e6edf3;--dim:#8b949e;--mute:#545d68;
+  --text:#e6edf3;--dim:#c9d1d9;--mute:#9ca3af;
   --accent:#00e59a;--ag:rgba(0,229,154,.15);--ags:rgba(0,229,154,.3);
   --a2:#58a6ff;--border:#1c2533;--bl:#151d28;
   --fd:'Playfair Display',Georgia,serif;
@@ -392,42 +392,49 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
   function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight}
   window.addEventListener('resize',resize);resize();
 
-  // Create layered stars with different depths
+  // Create layered stars with different depths - PACKED SKY
   function createStars(){
     stars=[];
-    const count=Math.floor((w*h)/1800);
+    const count=Math.floor((w*h)/250); // Dense star field
     for(let i=0;i<count;i++){
-      const depth=Math.random(); // 0=far, 1=near
+      const depth=Math.random();
       stars.push({
         x:Math.random()*w,
-        y:Math.random()*h*4, // span entire scrollable page
-        r:depth<.6?0.4+Math.random()*0.6 : depth<.9?0.8+Math.random()*1 : 1.2+Math.random()*1.5,
+        y:Math.random()*h*4,
+        r:depth<.4?0.4+Math.random()*0.7 : depth<.75?0.8+Math.random()*1.4 : 1.5+Math.random()*2.5,
         depth:depth,
-        twinkleSpeed:1+Math.random()*3,
+        twinkleSpeed:0.5+Math.random()*5,
         twinkleOffset:Math.random()*Math.PI*2,
-        hue:Math.random()<.7?0:Math.random()<.5?220:45, // white, blue, or gold
-        sat:Math.random()<.7?0:30+Math.random()*40
+        hue:Math.random()<.5?0:Math.random()<.5?220:Math.random()<.5?45:280,
+        sat:Math.random()<.5?0:40+Math.random()*60
       });
     }
   }
   createStars();
   window.addEventListener('resize',createStars);
 
-  // Shooting stars
+  // Shooting stars / asteroids with 3D effect - AMPED UP
   function spawnShootingStar(){
+    const is3D=Math.random()<0.65; // 65% chance of 3D asteroid style
     shootingStars.push({
-      x:Math.random()*w,
+      x:Math.random()*w*0.7,
       y:scrollY+Math.random()*h*0.5,
-      len:80+Math.random()*120,
-      speed:8+Math.random()*8,
-      angle:0.6+Math.random()*0.4,
+      len:is3D?100+Math.random()*150:100+Math.random()*180,
+      speed:is3D?5+Math.random()*7:10+Math.random()*12,
+      angle:0.4+Math.random()*0.6,
       life:1,
-      decay:0.012+Math.random()*0.01
+      decay:is3D?0.004+Math.random()*0.004:0.008+Math.random()*0.008,
+      is3D:is3D,
+      size:is3D?5+Math.random()*8:2,
+      rotation:0,
+      rotSpeed:0.06+Math.random()*0.12,
+      wobble:Math.random()*Math.PI*2
     });
   }
-  setInterval(()=>{if(Math.random()<0.4)spawnShootingStar()},3000);
+  // Spawn multiple at start
+  for(let i=0;i<3;i++) setTimeout(()=>spawnShootingStar(),i*400);
+  setInterval(()=>{if(Math.random()<0.7)spawnShootingStar()},800); // Very frequent
 
-  // Track scroll
   window.addEventListener('scroll',()=>{scrollY=window.pageYOffset},{passive:true});
 
   function draw(time){
@@ -441,43 +448,163 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
       if(sy<-10||sy>h+10) continue;
 
       const twinkle=0.5+0.5*Math.sin(t*s.twinkleSpeed+s.twinkleOffset);
-      const alpha=(0.3+0.7*s.depth)*twinkle;
-      const light=80+20*twinkle;
+      const alpha=(0.25+0.75*s.depth)*twinkle;
+      const light=75+25*twinkle;
 
       ctx.beginPath();
       ctx.arc(s.x,sy,s.r,0,Math.PI*2);
       ctx.fillStyle=s.sat>0?`hsla(${s.hue},${s.sat}%,${light}%,${alpha})`:`rgba(${light*2.55},${light*2.55},${light*2.55},${alpha})`;
       ctx.fill();
 
-      // Glow on larger stars
-      if(s.r>1.2){
+      if(s.r>1){
         ctx.beginPath();
-        ctx.arc(s.x,sy,s.r*3,0,Math.PI*2);
-        ctx.fillStyle=s.sat>0?`hsla(${s.hue},${s.sat}%,${light}%,${alpha*0.08})`:`rgba(255,255,255,${alpha*0.06})`;
+        ctx.arc(s.x,sy,s.r*3.5,0,Math.PI*2);
+        ctx.fillStyle=s.sat>0?`hsla(${s.hue},${s.sat}%,${light}%,${alpha*0.1})`:`rgba(255,255,255,${alpha*0.08})`;
         ctx.fill();
       }
     }
 
-    // Draw shooting stars
+    // Draw shooting stars and 3D asteroids
     for(let i=shootingStars.length-1;i>=0;i--){
       const ss=shootingStars[i];
       ss.x+=Math.cos(ss.angle)*ss.speed;
-      const sy=ss.y-scrollY*0.3;
       ss.y+=Math.sin(ss.angle)*ss.speed;
+      ss.rotation+=ss.rotSpeed;
+      const sy=ss.y-scrollY*0.3;
       ss.life-=ss.decay;
-      if(ss.life<=0){shootingStars.splice(i,1);continue}
+      if(ss.life<=0||ss.x>w+100||sy>h+100){shootingStars.splice(i,1);continue}
 
-      const tailX=ss.x-Math.cos(ss.angle)*ss.len;
-      const tailY=sy-Math.sin(ss.angle)*ss.len+Math.sin(ss.angle)*ss.speed;
-      const grad=ctx.createLinearGradient(tailX,tailY,ss.x,sy);
-      grad.addColorStop(0,'rgba(255,255,255,0)');
-      grad.addColorStop(1,`rgba(255,255,255,${ss.life*0.7})`);
-      ctx.beginPath();
-      ctx.moveTo(tailX,tailY);
-      ctx.lineTo(ss.x,sy);
-      ctx.strokeStyle=grad;
-      ctx.lineWidth=1.5;
-      ctx.stroke();
+      if(ss.is3D){
+        // 3D Asteroid style - BIGGER AND BOLDER
+        const headX=ss.x, headY=sy;
+        const tailLen=ss.len*ss.life;
+
+        // Outer glow/heat distortion
+        const outerGlow=ctx.createRadialGradient(headX,headY,0,headX,headY,ss.size*8);
+        outerGlow.addColorStop(0,`rgba(255,150,50,${ss.life*0.15})`);
+        outerGlow.addColorStop(0.5,`rgba(255,100,30,${ss.life*0.08})`);
+        outerGlow.addColorStop(1,'rgba(255,50,0,0)');
+        ctx.beginPath();
+        ctx.arc(headX,headY,ss.size*8,0,Math.PI*2);
+        ctx.fillStyle=outerGlow;
+        ctx.fill();
+
+        // Fiery trail with multiple layers - THICKER
+        for(let layer=5;layer>=0;layer--){
+          const trailWidth=(ss.size*1.2)*(layer+1)*0.6;
+          const trailAlpha=ss.life*(0.2-layer*0.025);
+          const grad=ctx.createLinearGradient(
+            headX-Math.cos(ss.angle)*tailLen,
+            headY-Math.sin(ss.angle)*tailLen,
+            headX,headY
+          );
+          const hue=20+layer*12;
+          grad.addColorStop(0,'rgba(255,60,10,0)');
+          grad.addColorStop(0.2,`hsla(${hue},100%,40%,${trailAlpha*0.4})`);
+          grad.addColorStop(0.5,`hsla(${hue+10},100%,55%,${trailAlpha*0.8})`);
+          grad.addColorStop(0.8,`hsla(${hue+20},100%,65%,${trailAlpha*1.2})`);
+          grad.addColorStop(1,`hsla(55,100%,85%,${trailAlpha*2})`);
+          ctx.beginPath();
+          ctx.moveTo(headX-Math.cos(ss.angle)*tailLen,headY-Math.sin(ss.angle)*tailLen);
+          ctx.lineTo(headX,headY);
+          ctx.strokeStyle=grad;
+          ctx.lineWidth=trailWidth;
+          ctx.lineCap='round';
+          ctx.stroke();
+        }
+
+        // Sparks/debris particles
+        for(let p=0;p<5;p++){
+          const sparkDist=20+p*15;
+          const sparkAngle=ss.angle+Math.sin(t*3+p*1.5)*0.3;
+          const sparkX=headX-Math.cos(sparkAngle)*sparkDist;
+          const sparkY=headY-Math.sin(sparkAngle)*sparkDist;
+          const sparkSize=1+Math.random()*2;
+          ctx.beginPath();
+          ctx.arc(sparkX,sparkY,sparkSize,0,Math.PI*2);
+          ctx.fillStyle=`rgba(255,${180+Math.random()*75},50,${ss.life*(0.6-p*0.1)})`;
+          ctx.fill();
+        }
+
+        // Intense glowing core
+        const coreGrad=ctx.createRadialGradient(headX,headY,0,headX,headY,ss.size*5);
+        coreGrad.addColorStop(0,`rgba(255,255,240,${ss.life})`);
+        coreGrad.addColorStop(0.2,`rgba(255,240,180,${ss.life*0.9})`);
+        coreGrad.addColorStop(0.4,`rgba(255,180,80,${ss.life*0.7})`);
+        coreGrad.addColorStop(0.7,`rgba(255,100,30,${ss.life*0.4})`);
+        coreGrad.addColorStop(1,'rgba(255,50,10,0)');
+        ctx.beginPath();
+        ctx.arc(headX,headY,ss.size*5,0,Math.PI*2);
+        ctx.fillStyle=coreGrad;
+        ctx.fill();
+
+        // Rocky asteroid body with 3D shading - CHUNKIER
+        ctx.save();
+        ctx.translate(headX,headY);
+        ctx.rotate(ss.rotation);
+        const bodyGrad=ctx.createRadialGradient(-ss.size*0.4,-ss.size*0.4,0,0,0,ss.size*1.2);
+        bodyGrad.addColorStop(0,`rgba(200,190,170,${ss.life})`);
+        bodyGrad.addColorStop(0.4,`rgba(140,130,115,${ss.life})`);
+        bodyGrad.addColorStop(0.8,`rgba(80,75,65,${ss.life*0.9})`);
+        bodyGrad.addColorStop(1,`rgba(40,35,30,${ss.life*0.7})`);
+        ctx.beginPath();
+        // Chunkier irregular asteroid shape
+        const s=ss.size*1.2;
+        ctx.moveTo(s*0.9,0);
+        ctx.quadraticCurveTo(s*1.1,s*0.5,s*0.5,s*0.95);
+        ctx.quadraticCurveTo(0,s*1.1,-s*0.6,s*0.8);
+        ctx.quadraticCurveTo(-s*1.05,s*0.3,-s*0.95,-s*0.1);
+        ctx.quadraticCurveTo(-s*0.9,-s*0.7,-s*0.3,-s*0.9);
+        ctx.quadraticCurveTo(s*0.4,-s*1,s*0.9,0);
+        ctx.fillStyle=bodyGrad;
+        ctx.fill();
+        // Highlight edge
+        ctx.strokeStyle=`rgba(255,220,180,${ss.life*0.3})`;
+        ctx.lineWidth=1;
+        ctx.stroke();
+        ctx.restore();
+
+      } else {
+        // Classic shooting star - BRIGHTER
+        const tailX=ss.x-Math.cos(ss.angle)*ss.len;
+        const tailY=sy-Math.sin(ss.angle)*ss.len;
+
+        // Wider glow trail
+        const glowGrad=ctx.createLinearGradient(tailX,tailY,ss.x,sy);
+        glowGrad.addColorStop(0,'rgba(150,180,255,0)');
+        glowGrad.addColorStop(0.5,`rgba(180,200,255,${ss.life*0.15})`);
+        glowGrad.addColorStop(1,`rgba(220,240,255,${ss.life*0.4})`);
+        ctx.beginPath();
+        ctx.moveTo(tailX,tailY);
+        ctx.lineTo(ss.x,sy);
+        ctx.strokeStyle=glowGrad;
+        ctx.lineWidth=8;
+        ctx.lineCap='round';
+        ctx.stroke();
+
+        // Core trail
+        const grad=ctx.createLinearGradient(tailX,tailY,ss.x,sy);
+        grad.addColorStop(0,'rgba(255,255,255,0)');
+        grad.addColorStop(0.6,`rgba(220,235,255,${ss.life*0.5})`);
+        grad.addColorStop(1,`rgba(255,255,255,${ss.life})`);
+        ctx.beginPath();
+        ctx.moveTo(tailX,tailY);
+        ctx.lineTo(ss.x,sy);
+        ctx.strokeStyle=grad;
+        ctx.lineWidth=3;
+        ctx.lineCap='round';
+        ctx.stroke();
+
+        // Bright glowing head
+        const headGlow=ctx.createRadialGradient(ss.x,sy,0,ss.x,sy,8);
+        headGlow.addColorStop(0,`rgba(255,255,255,${ss.life})`);
+        headGlow.addColorStop(0.5,`rgba(200,220,255,${ss.life*0.5})`);
+        headGlow.addColorStop(1,'rgba(150,180,255,0)');
+        ctx.beginPath();
+        ctx.arc(ss.x,sy,8,0,Math.PI*2);
+        ctx.fillStyle=headGlow;
+        ctx.fill();
+      }
     }
 
     requestAnimationFrame(draw);
