@@ -439,15 +439,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
     const count=Math.floor((w*h)/250); // Dense star field
     for(let i=0;i<count;i++){
       const depth=Math.random();
+      const r=depth<.4?0.4+Math.random()*0.7 : depth<.75?0.8+Math.random()*1.4 : 1.5+Math.random()*2.5;
       stars.push({
         x:Math.random()*w,
         y:Math.random()*h*4,
-        r:depth<.4?0.4+Math.random()*0.7 : depth<.75?0.8+Math.random()*1.4 : 1.5+Math.random()*2.5,
+        r:r,
         depth:depth,
         twinkleSpeed:0.5+Math.random()*5,
         twinkleOffset:Math.random()*Math.PI*2,
         hue:Math.random()<.5?0:Math.random()<.5?220:Math.random()<.5?45:280,
-        sat:Math.random()<.5?0:40+Math.random()*60
+        sat:Math.random()<.5?0:40+Math.random()*60,
+        skipInExp:r<1.5&&Math.random()<0.5
       });
     }
   }
@@ -558,10 +560,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
     const t=time*0.001;
 
     // Draw stars with parallax
+    const expEl=document.getElementById('experience');
+    const expRect=expEl?expEl.getBoundingClientRect():null;
     for(const s of stars){
       const parallax=0.05+s.depth*0.45;
       const sy=((s.y-scrollY*parallax)%((h*4))+h*4)%(h*4);
       if(sy<-10||sy>h+10) continue;
+      if(s.skipInExp&&expRect&&sy>expRect.top&&sy<expRect.bottom) continue;
 
       const twinkle=0.5+0.5*Math.sin(t*s.twinkleSpeed+s.twinkleOffset);
       const alpha=(0.25+0.75*s.depth)*twinkle;
