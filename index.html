@@ -310,7 +310,7 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
       <p class="sd">Clinical depth meets creative problem-solving.</p>
     </div>
     <div class="sg">
-      <div class="sc r"><span class="sc-icon">🖥️</span><div class="sc-name" style="color:#00e59a">EMR Systems</div><div class="sc-detail">Fluent in Epic, Oracle, MEDITECH, Allscripts, and other major EMR platforms.</div></div>
+      <div class="sc r"><span class="sc-icon">🖥️</span><div class="sc-name" style="color:#00e59a">EMR Systems</div><div class="sc-detail">Fluent in Epic, Oracle, MEDITECH, Allscripts, and other major EMR platforms. HIPAA-compliant home workstation with motion-alert camera system. Ready for the future of remote healthcare.</div></div>
       <div class="sc r rd1"><span class="sc-icon">🩺</span><div class="sc-name" style="color:#00e59a">Clinical Procedures</div><div class="sc-detail">Trach, GT, GJT, NJT, PICC, TPN, ventilators, concentrators, and IV therapy.</div></div>
       <div class="sc r rd2"><span class="sc-icon">📋</span><div class="sc-name" style="color:#00e59a">Coding &amp; Documentation</div><div class="sc-detail">OASIS assessments, ICD-10, CPT codes. Letters of medical necessity. DME/pharmacy optimization.</div></div>
       <div class="sc r rd3"><span class="sc-icon">🎓</span><div class="sc-name" style="color:#00e59a">Education &amp; Training</div><div class="sc-detail">Diabetic Educator. LTV and Trilogy ventilator trainer for new hires and parents.</div></div>
@@ -566,7 +566,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
       const parallax=0.05+s.depth*0.45;
       const sy=((s.y-scrollY*parallax)%((h*4))+h*4)%(h*4);
       if(sy<-10||sy>h+10) continue;
-      if(s.skipInExp&&expRect&&sy>expRect.top&&sy<expRect.bottom) continue;
+      if(expRect&&sy>expRect.top&&sy<expRect.bottom){
+        const contentLeft=(w-960)/2-40;
+        const contentRight=(w+960)/2+40;
+        const inContent=s.x>contentLeft&&s.x<contentRight;
+        if(inContent&&s.skipInExp) continue;
+        if(inContent&&s.r<1.2) continue;
+      }
 
       const twinkle=0.5+0.5*Math.sin(t*s.twinkleSpeed+s.twinkleOffset);
       const alpha=(0.25+0.75*s.depth)*twinkle;
