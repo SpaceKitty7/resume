@@ -233,7 +233,7 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
     <div class="about-grid">
       <div class="r">
         <div class="sl">// About</div>
-        <h2 class="st">Built on Trust,<br>Driven by Care</h2>
+        <h2 class="st"><span class="tube-text tube-scroll" data-text="Built on Trust,">Built on Trust,</span><br><span class="tube-text tube-scroll" data-text="Driven by Care" style="animation-delay:.3s">Driven by Care</span></h2>
         <p class="about-text">
           Dedicated healthcare professional with extensive <strong>home health and case management</strong> experience seeking a new team. Committed to the delivery of compassionate, coordinated care across diverse patient populations.
           <br><br>
@@ -254,7 +254,7 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
   <div class="si">
     <div class="r">
       <div class="sl">// Experience</div>
-      <h2 class="st">Professional Journey</h2>
+      <h2 class="st"><span class="tube-text tube-scroll" data-text="Professional Journey">Professional Journey</span></h2>
       <p class="sd">A decade of hands-on patient care across multiple settings and populations.</p>
     </div>
     <div class="timeline r rd1">
@@ -405,48 +405,55 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
 <script>
 // Vacuum tube text scramble effect
 (function(){
-  const el=document.getElementById('tube-name');
-  if(!el)return;
-  const finalText='Scott Hufford,';
   const chars='█▓▒░╔╗╚╝║═╬▲▼◄►○●□■&@#$%!?*~';
-  let frame=0;
-  const totalFrames=60;
   const flickerChance=[1,1,1,.8,.8,.6,.6,.4,.4,.2,.1,.05,0];
 
-  function scramble(){
-    if(frame>=totalFrames){el.textContent=finalText;return}
-    const progress=frame/totalFrames;
-    const flickerIndex=Math.min(Math.floor(progress*flickerChance.length),flickerChance.length-1);
-
-    if(Math.random()<flickerChance[flickerIndex]){
-      // Show static/scrambled
-      let result='';
-      for(let i=0;i<finalText.length;i++){
-        if(Math.random()<progress*1.2){
-          result+=finalText[i];
-        }else{
-          result+=chars[Math.floor(Math.random()*chars.length)];
+  function runScramble(el,finalText,delay=0){
+    let frame=0;
+    const totalFrames=60;
+    function scramble(){
+      if(frame>=totalFrames){el.textContent=finalText;return}
+      const progress=frame/totalFrames;
+      const flickerIndex=Math.min(Math.floor(progress*flickerChance.length),flickerChance.length-1);
+      if(Math.random()<flickerChance[flickerIndex]){
+        let result='';
+        for(let i=0;i<finalText.length;i++){
+          if(Math.random()<progress*1.2){result+=finalText[i]}
+          else{result+=chars[Math.floor(Math.random()*chars.length)]}
         }
-      }
-      el.textContent=result;
-    }else{
-      // Show partially resolved text
-      let result='';
-      for(let i=0;i<finalText.length;i++){
-        if(Math.random()<progress){
-          result+=finalText[i];
-        }else if(Math.random()<.3){
-          result+=chars[Math.floor(Math.random()*chars.length)];
-        }else{
-          result+=finalText[i];
+        el.textContent=result;
+      }else{
+        let result='';
+        for(let i=0;i<finalText.length;i++){
+          if(Math.random()<progress){result+=finalText[i]}
+          else if(Math.random()<.3){result+=chars[Math.floor(Math.random()*chars.length)]}
+          else{result+=finalText[i]}
         }
+        el.textContent=result;
       }
-      el.textContent=result;
+      frame++;
+      setTimeout(scramble,50);
     }
-    frame++;
-    setTimeout(scramble,50);
+    setTimeout(scramble,delay);
   }
-  setTimeout(scramble,200);
+
+  // Hero name - run immediately
+  const heroName=document.getElementById('tube-name');
+  if(heroName)runScramble(heroName,'Scott Hufford,',200);
+
+  // Scroll-triggered elements
+  const scrollEls=document.querySelectorAll('.tube-scroll');
+  const scrollObs=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting&&!entry.target.dataset.triggered){
+        entry.target.dataset.triggered='true';
+        const text=entry.target.dataset.text;
+        const delay=entry.target.style.animationDelay?parseFloat(entry.target.style.animationDelay)*1000:0;
+        runScramble(entry.target,text,delay);
+      }
+    });
+  },{threshold:.5});
+  scrollEls.forEach(el=>scrollObs.observe(el));
 })();
 
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
