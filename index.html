@@ -71,7 +71,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .hero h1 em{font-style:italic;color:var(--accent)}
 .hero-sub{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--text);font-weight:400;max-width:620px;margin-bottom:2.2rem;animation:riseUp 1s var(--ease) .3s both;text-shadow:0 2px 20px rgba(0,0,0,.8),0 0 40px rgba(6,8,13,.9);background:rgba(6,8,13,.5);padding:.8rem 1.2rem;border-radius:10px;border-left:3px solid var(--accent)}
 @keyframes riseUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;animation:riseUp 1s var(--ease) .45s both}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem;max-width:820px;animation:riseUp 1s var(--ease) .45s both}
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border-radius:8px;font-weight:600;font-size:.9rem;letter-spacing:.02em;transition:all .3s var(--ease);cursor:pointer;border:none;font-family:var(--fb)}
 .btn-primary{background:var(--accent);color:var(--bg)}
 .btn-primary:hover{background:#fff;color:var(--bg);box-shadow:0 6px 30px var(--ags);transform:translateY(-2px)}
