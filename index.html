@@ -64,8 +64,10 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .badge::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;animation:blink 2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{font-family:var(--fd);font-size:clamp(2.8rem,7vw,5.2rem);line-height:1.06;margin-bottom:.4rem;animation:riseUp 1s var(--ease) .15s both;background:linear-gradient(90deg,var(--text) 0%,var(--text) 35%,#fff 42%,#a8edff 50%,#fff 58%,var(--text) 65%,var(--text) 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:riseUp 1s var(--ease) .15s both,diamond-shimmer 3s ease-in-out infinite 1.5s;text-shadow:0 0 30px rgba(168,237,255,.3)}
-@keyframes diamond-shimmer{0%,100%{background-position:200% center}50%{background-position:-200% center}}
+.hero h1{font-family:var(--fd);font-size:clamp(2.8rem,7vw,5.2rem);line-height:1.06;margin-bottom:.4rem}
+.hero h1 .tube-text{display:inline;opacity:0;animation:tube-warmup 3s ease-out forwards}
+.hero h1 em{font-style:italic;color:var(--accent)}
+@keyframes tube-warmup{0%{opacity:0;filter:blur(8px);color:#ff6a00}5%{opacity:1;filter:blur(0);color:#ff8c00}8%{opacity:0}12%{opacity:1;color:#ffa500;filter:blur(2px)}15%{opacity:0.3}20%{opacity:1;color:#ffb84d;text-shadow:0 0 30px #ff6a00}25%{opacity:0}30%{opacity:0.8;filter:blur(1px)}35%{opacity:1;color:#ffd699}50%{opacity:0.6}55%{opacity:1}65%{opacity:0.9;color:#ffe4b8}80%{color:#fff5e6;filter:blur(0);text-shadow:0 0 20px rgba(255,200,150,.5)}100%{opacity:1;color:var(--text);filter:blur(0);text-shadow:none}}
 .hero h1 em{font-style:italic;color:var(--accent)}
 .hero-sub{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--text);font-weight:400;max-width:620px;margin-bottom:2.2rem;animation:riseUp 1s var(--ease) .3s both;text-shadow:0 2px 20px rgba(0,0,0,.8),0 0 40px rgba(6,8,13,.9);background:rgba(6,8,13,.5);padding:.8rem 1.2rem;border-radius:10px;border-left:3px solid var(--accent)}
 @keyframes riseUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -206,7 +208,7 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
 <section class="hero">
   <div class="hero-inner">
     <div class="badge">Available for Hire — Chicago, IL</div>
-    <h1>Scott Hufford,<br><em>LPN/Case Manager</em></h1>
+    <h1><span class="tube-text" id="tube-name">Scott Hufford,</span><br><em class="tube-text" style="animation-delay:.5s">LPN/Case Manager</em></h1>
     <p class="hero-sub">COVID frontline veteran with 10+ years of nursing experience. Seeking to apply hard-won skills in coordination, meticulous documentation, and human connection to roles outside the clinical world.</p>
     <div class="hero-actions">
       <button onclick="showModal('both')" class="btn btn-primary">
@@ -401,6 +403,52 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
 </footer>
 
 <script>
+// Vacuum tube text scramble effect
+(function(){
+  const el=document.getElementById('tube-name');
+  if(!el)return;
+  const finalText='Scott Hufford,';
+  const chars='█▓▒░╔╗╚╝║═╬▲▼◄►○●□■&@#$%!?*~';
+  let frame=0;
+  const totalFrames=60;
+  const flickerChance=[1,1,1,.8,.8,.6,.6,.4,.4,.2,.1,.05,0];
+
+  function scramble(){
+    if(frame>=totalFrames){el.textContent=finalText;return}
+    const progress=frame/totalFrames;
+    const flickerIndex=Math.min(Math.floor(progress*flickerChance.length),flickerChance.length-1);
+
+    if(Math.random()<flickerChance[flickerIndex]){
+      // Show static/scrambled
+      let result='';
+      for(let i=0;i<finalText.length;i++){
+        if(Math.random()<progress*1.2){
+          result+=finalText[i];
+        }else{
+          result+=chars[Math.floor(Math.random()*chars.length)];
+        }
+      }
+      el.textContent=result;
+    }else{
+      // Show partially resolved text
+      let result='';
+      for(let i=0;i<finalText.length;i++){
+        if(Math.random()<progress){
+          result+=finalText[i];
+        }else if(Math.random()<.3){
+          result+=chars[Math.floor(Math.random()*chars.length)];
+        }else{
+          result+=finalText[i];
+        }
+      }
+      el.textContent=result;
+    }
+    frame++;
+    setTimeout(scramble,50);
+  }
+  setTimeout(scramble,200);
+})();
+
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 const nav=document.getElementById('navbar');
