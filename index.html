@@ -55,7 +55,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .burger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
 
 /* ── HERO ── */
-.hero{min-height:100vh;display:flex;align-items:center;padding:7rem 2rem 4rem;position:relative;overflow:hidden}
+.hero{min-height:100vh;display:flex;align-items:flex-start;padding:5rem 2rem 4rem;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-25%;right:-15%;width:700px;height:700px;background:radial-gradient(circle,var(--ag) 0%,transparent 70%);border-radius:50%;animation:drift 9s ease-in-out infinite;pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:-15%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(88,166,255,.06) 0%,transparent 70%);border-radius:50%;animation:drift 12s ease-in-out infinite reverse;pointer-events:none}
 @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-25px) scale(1.04)}}
