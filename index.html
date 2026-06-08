@@ -183,9 +183,63 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
 .crack-overlay{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;transition:opacity .15s ease-out}
 .crack-overlay.active{opacity:1;pointer-events:auto}
 .crack-overlay svg{width:100%;height:100%}
+
+/* ── BLACK MIRROR INTRO ── */
+.bm-intro{position:fixed;inset:0;z-index:10000;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .8s ease-out}
+.bm-intro.fade-out{opacity:0;pointer-events:none}
+.bm-intro-text{font-family:var(--fd);font-size:clamp(3rem,10vw,7rem);color:#fff;text-align:center;letter-spacing:.02em;opacity:0;transform:scale(.98);transition:opacity .3s,transform .3s}
+.bm-intro-text.visible{opacity:1;transform:scale(1)}
+.bm-intro-text.flicker{animation:bm-flicker .15s ease-in-out}
+@keyframes bm-flicker{0%{opacity:1}25%{opacity:0}50%{opacity:1}75%{opacity:.3}100%{opacity:1}}
+.bm-intro .crack-overlay{z-index:10001}
+
+/* Intro crack has white lines for visibility on black */
+.bm-intro .crack-overlay svg g{stroke:rgba(255,255,255,0.85)}
+.bm-intro .crack-overlay svg circle{fill:rgba(255,255,255,0.2)}
+.bm-intro .crack-overlay svg circle:nth-child(2){fill:rgba(255,255,255,0.4)}
+.bm-intro .crack-overlay svg circle:nth-child(3){fill:rgba(255,255,255,0.7)}
+
+/* Pause hero animations until intro completes */
+body.intro-active .badge,
+body.intro-active .hero-sub,
+body.intro-active .hero-actions,
+body.intro-active .hero-stats,
+body.intro-active .tube-text{animation-play-state:paused;opacity:0}
+body.intro-active .hero-stat-num{opacity:0}
 </style>
 </head>
-<body>
+<body class="intro-active">
+
+<!-- BLACK MIRROR INTRO -->
+<div class="bm-intro" id="bm-intro">
+  <div class="bm-intro-text" id="bm-text">Scott Hufford</div>
+  <div class="crack-overlay" id="bm-crack">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs><filter id="intro-crack-glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <g filter="url(#intro-crack-glow)" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" fill="none">
+        <path d="M960,540 L920,480 L870,420 L820,350 L750,280 L680,200 L600,120 L520,40 L440,0"/>
+        <path d="M960,540 L1020,470 L1080,400 L1150,320 L1220,240 L1300,150 L1380,60 L1460,0"/>
+        <path d="M960,540 L900,520 L820,500 L720,480 L600,460 L480,450 L340,440 L200,430 L0,420"/>
+        <path d="M960,540 L1040,530 L1140,520 L1260,510 L1400,500 L1560,490 L1720,480 L1920,470"/>
+        <path d="M960,540 L940,600 L910,680 L870,780 L820,900 L760,1020 L700,1080"/>
+        <path d="M960,540 L990,620 L1030,720 L1080,840 L1140,980 L1200,1080"/>
+        <path d="M960,540 L880,560 L780,590 L660,630 L520,680 L360,740 L180,820 L0,900"/>
+        <path d="M960,540 L1060,570 L1180,610 L1320,660 L1480,720 L1660,790 L1860,870 L1920,900"/>
+        <path d="M920,480 L880,460 L820,430 L740,390"/>
+        <path d="M1020,470 L1060,440 L1120,400 L1200,350"/>
+        <path d="M870,420 L830,450 L770,500 L700,560"/>
+        <path d="M1080,400 L1130,440 L1200,500 L1280,570"/>
+        <path d="M900,520 L860,550 L800,600 L720,660"/>
+        <path d="M1040,530 L1100,560 L1180,610 L1280,670"/>
+        <path d="M940,600 L880,640 L800,700 L700,780"/>
+        <path d="M990,620 L1060,660 L1150,720 L1260,800"/>
+      </g>
+      <circle cx="960" cy="540" r="30" fill="rgba(255,255,255,0.15)"/>
+      <circle cx="960" cy="540" r="18" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="960" cy="540" r="8" fill="rgba(255,255,255,0.7)"/>
+    </svg>
+  </div>
+</div>
 
 <!-- SPACE BACKGROUND -->
 <canvas id="space-bg"></canvas>
@@ -406,6 +460,158 @@ footer{text-align:center;padding:2rem;font-size:.75rem;color:var(--mute);border-
 </footer>
 
 <script>
+// ── BLACK MIRROR INTRO SEQUENCE ──
+(function(){
+  const intro = document.getElementById('bm-intro');
+  const text = document.getElementById('bm-text');
+  const crack = document.getElementById('bm-crack');
+  const chars = '█▓▒░╔╗╚╝║═╬▲▼◄►○●□■&@#$%!?*~';
+  const finalText = 'Scott Hufford';
+  let audioCtx = null;
+
+  // Create electrical zap sound using Web Audio API
+  function playZap() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const duration = 0.08;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(80 + Math.random() * 200, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + duration);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(2000, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+
+  // Create glass crack sound
+  function playCrack() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const duration = 0.4;
+
+    // White noise burst
+    const bufferSize = audioCtx.sampleRate * duration;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 3);
+    }
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start();
+
+    // Low thump for impact
+    const osc = audioCtx.createOscillator();
+    const oscGain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.15);
+    oscGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+    osc.connect(oscGain);
+    oscGain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.15);
+  }
+
+  // Scramble animation for intro
+  function runIntroScramble(callback) {
+    let frame = 0;
+    const totalFrames = 50;
+    const flickerChance = [1, 1, .9, .8, .7, .6, .5, .4, .3, .2, .1, .05, 0];
+
+    function scramble() {
+      if (frame >= totalFrames) {
+        text.textContent = finalText;
+        if (callback) callback();
+        return;
+      }
+
+      const progress = frame / totalFrames;
+      const flickerIndex = Math.min(Math.floor(progress * flickerChance.length), flickerChance.length - 1);
+
+      // Play zap sounds during early scramble
+      if (frame < 30 && Math.random() < 0.3) {
+        playZap();
+      }
+
+      // Occasional flicker
+      if (Math.random() < flickerChance[flickerIndex]) {
+        text.classList.add('flicker');
+        setTimeout(() => text.classList.remove('flicker'), 150);
+      }
+
+      let result = '';
+      for (let i = 0; i < finalText.length; i++) {
+        if (Math.random() < progress * 1.3) {
+          result += finalText[i];
+        } else {
+          result += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+      text.textContent = result;
+
+      frame++;
+      setTimeout(scramble, 60);
+    }
+
+    scramble();
+  }
+
+  // Run the intro sequence
+  function runIntro() {
+    // Show text and start scramble after brief delay
+    setTimeout(() => {
+      text.classList.add('visible');
+      runIntroScramble(() => {
+        // Text settled, wait then crack
+        setTimeout(() => {
+          playCrack();
+          crack.classList.add('active');
+
+          // Wait then fade out intro
+          setTimeout(() => {
+            intro.classList.add('fade-out');
+            document.body.classList.remove('intro-active');
+
+            // Remove intro from DOM after fade
+            setTimeout(() => {
+              intro.remove();
+            }, 800);
+          }, 1200);
+        }, 600);
+      });
+    }, 500);
+  }
+
+  // Start intro when page loads
+  runIntro();
+})();
+
 // Vacuum tube text scramble effect
 (function(){
   const chars='█▓▒░╔╗╚╝║═╬▲▼◄►○●□■&@#$%!?*~';
